@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: service
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: manifests/service
+    repoURL: https://github.com/cmorinupgrade/manifests.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gateway
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "100"
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: manifests/gateway
+    repoURL: https://github.com/cmorinupgrade/manifests.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
